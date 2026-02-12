@@ -1,0 +1,42 @@
+Role: Senior Frontend Engineer & Architect. Objective: Recreate the provided UI (from screenshots) as a professional, scalable React application.
+Technical Stack:
+•	Framework: React (Functional Components).
+•	Language: TypeScript (Strict Mode).
+•	State Management: MobX (Class-based stores).
+•	UI Library: Material UI (MUI) v5/v6.
+Architecture & Professionalism Rules:
+1.	Store-Logic Separation: All business logic (shuffling, drawing, completing items) must reside in a MobX store class. Components must only trigger actions and observe state.
+2.	MUI Layout: Use only Stack and Grid for layouts. Never use display: flex in sx props.
+3.	Clean Code: No comments. Use highly descriptive naming. Keep components under 100 lines.
+4.	Data Handling: Implement a simulated API layer using .then() and .catch() for fetching/saving data.
+Features to Implement:
+•	Dashboard Header: Top bar with logo and title.
+•	Statistics Bar: 4 cards showing: Read Chapters (out of 150), Remaining for Draw, Active Chapters, and Completed Cycles.
+•	Interaction Zone: * "Draw" button (Random selection).
+•	"Choose Specific" button (Dropdown/Search).
+•	Confirmation UI: "I am taking this chapter" vs "Draw another".
+•	Active Items List: Cards for items currently in progress with "View" and "Finish" actions.
+•	Error States: Styled error alerts for failed data loading.
+Visual Style: Rounded corners, subtle shadows, and a clean pastel palette (Orange/Blue/White) as seen in the images.
+
+# Copilot Instructions - High Professionalism Standard
+
+## State Management (MobX)
+- State must only be updated within the store using `@action`.
+- Use class-based stores with `makeAutoObservable(this)`.
+- Components must be wrapped in `observer` to react to state changes.
+
+## UI & Layout (MUI)
+- Use MUI components exclusively.
+- Layouts: Use `Stack` for 1D and `Grid` for 2D layouts. Never use `display: flex`.
+- Styling: Use the `sx` prop or `styled()` utility. Follow the theme system.
+
+## Code Quality
+- Single Responsibility: Each component/file handles one thing.
+- No comments: Code must be self-explanatory through naming.
+- TypeScript: Every prop, state, and function must have a clear interface/type.
+- Async: Use `.then().catch()` syntax for API calls; avoid wrapping in unnecessary try/catch blocks.
+
+## Formatting
+- Imports: Group external libraries first, then internal code.
+- Maintain a clean and minimal component hierarchy.
