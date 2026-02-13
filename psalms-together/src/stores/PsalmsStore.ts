@@ -1,6 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import tehillim from '../../tehillim.json';
 
+export interface TehillimChapter {
+  number: number;
+  hebrewNumber: string;
+  name: string;
+  verses: string[] | string;
+}
+
 interface ActiveChapter {
   id: string;
   number: number;
@@ -9,7 +16,7 @@ interface ActiveChapter {
 }
 
 export class PsalmsStore {
-  chapters: Array<any> = [];
+  chapters: TehillimChapter[] = [];
   totalChapters = 150;
   readChapters: number[] = [];
   activeChapters: ActiveChapter[] = [];
@@ -22,11 +29,11 @@ export class PsalmsStore {
     makeAutoObservable(this);
     // Load local Tehillim JSON
     try {
-      this.chapters = (tehillim as any) || [];
+      this.chapters = Array.isArray(tehillim) ? (tehillim as TehillimChapter[]) : [];
       if (this.chapters.length > 0) {
         this.totalChapters = this.chapters.length;
       }
-    } catch (err) {
+    } catch {
       this.error = 'לא ניתן לטעון את קובץ התהילים המקומי';
     }
   }
@@ -43,15 +50,19 @@ export class PsalmsStore {
     return this.activeChapters.filter(ch => ch.status === 'reading').length;
   }
 
+  get availableChapters(): number[] {
+    return Array.from({ length: this.totalChapters }, (_, i) => i + 1).filter(
+      num => !this.readChapters.includes(num) && !this.activeChapters.some(ch => ch.number === num && ch.status === 'reading')
+    );
+  }
+
   drawRandomChapter(): void {
     this.isLoading = true;
     this.error = null;
     this.selectedChapter = null;
 
     setTimeout(() => {
-      const availableChapters = Array.from({ length: this.totalChapters }, (_, i) => i + 1).filter(
-        num => !this.readChapters.includes(num) && !this.activeChapters.some(ch => ch.number === num && ch.status === 'reading')
-      );
+      const availableChapters = this.availableChapters;
 
       if (availableChapters.length === 0) {
         this.error = 'שגיאה בטעינת הפרק';
